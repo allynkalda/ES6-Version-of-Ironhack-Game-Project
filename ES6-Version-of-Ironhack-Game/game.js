@@ -91,98 +91,101 @@ class Game {
         this.updateArrays(this.addlife);
     }
 
-}
-
-
-
-
-
-Game.prototype.drawCanvas = function() {
-    if (this.gameOver === false) {
-        this.player.draw();
-    }
-    this.drawFunc = (array) => {
-        array.forEach( function(objects) {
-            objects.draw();
-        });
-    }
-    this.drawFunc(this.obstacles);
-    this.drawFunc(this.newobstacles);
-    this.drawFunc(this.addlife);
-}
-
-Game.prototype.checkCollisions = function() {
-    this.obstacles.forEach((objects, index) => {
-       const isColliding = this.player.checkCollisions(objects);
-    
-       if(isColliding) {
-           this.obstacles.splice(index, 1);
-           this.player.setLives();
-           if (this.player.lives === 0) {
-               this.gameOver = true;  
-           }
-       } 
-    })
-    this.newobstacles.forEach((objects, index) => {
-        const isColliding = this.player.checkCollisions(objects);
-     
-        if(isColliding) {
-            this.newobstacles.splice(index, 1);
-            this.player.setLives();
-            if (this.player.lives === 0) {
-                this.gameOver = true;  
-            }
-        } 
-     })
-     this.addlife.forEach((objects, index) => {
-        const isColliding = this.player.checkCollisions(objects);
-        
-        if(isColliding) {
-            this.addlife.splice(index, 1);
-            this.player.addLives();
-        } 
-     })
-     
-}
-// Setting intervals for timer
-Game.prototype.setIntervals = function() {
-    const setSeconds = () => {
-        if (this.timer === 0) {
-            clearInterval(intervals);
-        } else {
-        this.timer -= 1;
-        let seconds = document.getElementById('seconds');
-        seconds.innerHTML = `Countdown: ${this.timer}`;
+    drawCanvas() {
+        if (this.gameOver === false) {
+            this.player.draw();
         }
+        this.drawFunc = (array) => {
+            array.forEach( function(objects) {
+                objects.draw();
+            });
+        }
+        this.drawFunc(this.obstacles);
+        this.drawFunc(this.newobstacles);
+        this.drawFunc(this.addlife);
     }
-    let intervals = setInterval(setSeconds, 1000);
+    
+    checkCollisions = (array) => {
+        if (array === this.obstacles || this.newobstacles) {
+            array.forEach((objects, index) => {
+                const isColliding = this.player.checkCollisions(objects);
+             
+                if(isColliding) {
+                    array.splice(index, 1);
+                    this.player.setLives();
+                    if (this.player.lives === 0) {
+                        this.gameOver = true;  
+                    }
+                } 
+             })
+        } else if (array === addlife) {
+            array.forEach((objects, index) => {
+                const isColliding = this.player.checkCollisions(objects);
+                
+                if(isColliding) {
+                    array.splice(index, 1);
+                    this.player.addLives();
+                } 
+             })
+        }  
+    }
+
+// Setting intervals for timer
+    setIntervals() {
+        const setSeconds = () => {
+            if (this.timer === 0) {
+                clearInterval(intervals);
+            } else {
+            this.timer -= 1;
+            let seconds = document.getElementById('seconds');
+            seconds.innerHTML = `Countdown: ${this.timer}`;
+            }
+        }
+        let intervals = setInterval(setSeconds, 1000);
+    }
+    
+    setLevelUpCallback(callback) {
+        this.LevelUpGame = callback;
+    }
+
+    killedSound() {
+        var killed = document.getElementById('killed');
+        killed.play();
+    }
+
+    startSound() {
+        var start = document.getElementById('jaunty');
+        start.volume = 0.2;
+        start.play();
+    }
+
+    stopSound() {
+        var start = document.getElementById('jaunty');
+        start.pause();
+    }
+
+    winSound() {
+        var win = document.getElementById('win');
+        win.play();
+    }
+
 }
 
-Game.prototype.setGameOverCallback = function(callback) {
-    this.endOfGame = callback;
-}
 
-Game.prototype.setLevelUpCallback = function(callback) {
-    this.LevelUpGame = callback;
-}
 
-Game.prototype.killedSound = function() {
-    var killed = document.getElementById('killed');
-    killed.play();
-}
 
-Game.prototype.startSound = function() {
-    var start = document.getElementById('jaunty');
-    start.volume = 0.2;
-    start.play();
-}
 
-Game.prototype.stopSound = function() {
-    var start = document.getElementById('jaunty');
-    start.pause();
-}
 
-Game.prototype.winSound = function() {
-    var win = document.getElementById('win');
-    win.play();
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
