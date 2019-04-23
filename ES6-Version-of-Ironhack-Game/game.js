@@ -105,30 +105,41 @@ class Game {
         this.drawFunc(this.addlife);
     }
     
-    checkCollisions = (array) => {
-        if (array === this.obstacles || this.newobstacles) {
-            array.forEach((objects, index) => {
-                const isColliding = this.player.checkCollisions(objects);
-             
-                if(isColliding) {
-                    array.splice(index, 1);
-                    this.player.setLives();
-                    if (this.player.lives === 0) {
-                        this.gameOver = true;  
-                    }
-                } 
-             })
-        } else if (array === addlife) {
-            array.forEach((objects, index) => {
-                const isColliding = this.player.checkCollisions(objects);
-                
-                if(isColliding) {
-                    array.splice(index, 1);
-                    this.player.addLives();
-                } 
-             })
-        }  
+    checkCollisions() {
+        this.obstacles.forEach((objects, index) => {
+           const isColliding = this.player.checkCollisions(objects);
+        
+           if(isColliding) {
+               this.obstacles.splice(index, 1);
+               this.player.setLives();
+               if (this.player.lives === 0) {
+                   this.gameOver = true;  
+               }
+           } 
+        })
+        this.newobstacles.forEach((objects, index) => {
+            const isColliding = this.player.checkCollisions(objects);
+         
+            if(isColliding) {
+                this.newobstacles.splice(index, 1);
+                this.player.setLives();
+                if (this.player.lives === 0) {
+                    this.gameOver = true;  
+                }
+            } 
+         })
+         this.addlife.forEach((objects, index) => {
+            const isColliding = this.player.checkCollisions(objects);
+            
+            if(isColliding) {
+                this.addlife.splice(index, 1);
+                this.player.addLives();
+            } 
+         })
+         
     }
+
+    
 
 // Setting intervals for timer
     setIntervals() {
@@ -142,6 +153,10 @@ class Game {
             }
         }
         let intervals = setInterval(setSeconds, 1000);
+    }
+
+    setGameOverCallback(callback) {
+        this.endOfGame = callback;
     }
     
     setLevelUpCallback(callback) {

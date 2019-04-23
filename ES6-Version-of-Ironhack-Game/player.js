@@ -73,6 +73,10 @@ class Player {
         hit.play();
     }
 
+    jumpSound() {
+        let jump = document.getElementById('jump');
+        jump.play();
+    }
 }
 
 
@@ -85,7 +89,3 @@ class Player {
 
 
 
-Player.prototype.jumpSound = function() {
-    var jump = document.getElementById('jump');
-    jump.play();
-}

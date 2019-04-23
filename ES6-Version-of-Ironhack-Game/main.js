@@ -1,13 +1,13 @@
-function main() {
+const main = () => {
 
   // Method to change screens in every state
-  function buildDOM(html) {
+  const buildDOM = (html) => {
     const mainElement = document.querySelector('main');
     mainElement.innerHTML = html;
     return mainElement;
   }
   // Builds splash screen through load event
-  function buildSplashScreen() {
+  const buildSplashScreen = () => {
     const splashScreen = buildDOM(`
         <section class="splash-screen">
         <div class="inner-box">
@@ -22,7 +22,7 @@ function main() {
     startButton.addEventListener('click', buildGameScreen);
   }
   // Builds game screen through click event
-  function buildGameScreen() {
+  const buildGameScreen = () => {
     
     const gameScreen = buildDOM(`
         <section class="game-container">
@@ -74,7 +74,7 @@ function main() {
     })
   }
 // Build level up screen
-  function buildLevelUpScreen() {
+  const buildLevelUpScreen = () => {
     const levelUpScreen = buildDOM(`
         <section class="splash-screen">
         <div class="inner-box">
@@ -88,7 +88,7 @@ function main() {
     continueButton.addEventListener('click', buildGameScreen);
   }
 // Build game over screen through life === 0, has restart button
-  function buildGameOverScreen() {
+  const buildGameOverScreen = () => {
     const gameOverScreen = buildDOM(`
         <section class="splash-screen">
         <div class="inner-box">
